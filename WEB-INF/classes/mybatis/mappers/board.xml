@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.board">
+	<select id="selectAllBoard" resultType="com.myspring.pro27.board.BoardVO">
+		SELECT * 
+		FROM (
+			SELECT ROWNUM RN, A.* 
+				FROM (
+						SELECT * 
+						FROM BOARD2
+						ORDER BY num DESC 
+						) A
+				)
+	WHERE RN BETWEEN #{start,jdbcType=VARCHAR} AND #{end,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="listBoard" resultType="java.util.HashMap">
+		select * from board
+	</select>
+	
+	<select id ="listCount" resultType="int">
+		select count(num) from board2
+		where num > 0
+	</select>
+	
+	<insert id="boardInsert" parameterType="com.myspring.pro27.board.BoardVO">
+		insert into board(id,title,num)
+		values(#{id},#{title},seq_ai.nextval)
+	</insert>
+
+</mapper>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<!-- 전부 적용 -->
+   <definition name="baseLayout"  template="/WEB-INF/views/common/layout.jsp">
+      <put-attribute name="title" value="" />
+      <put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
+      <put-attribute name="side" value="/WEB-INF/views/common/side.jsp" />
+      <put-attribute name="body" value="" />
+      <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+   </definition>
+   
+   <!-- 원하는거 적용 -->
+   <definition name="nomalLayout" template="/WEB-INF/views/common/nomalLayout.jsp">
+      <put-attribute name="title" value="" />
+      <put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
+      <put-attribute name="side" value="/WEB-INF/views/common/side.jsp" />
+      <put-attribute name="body" value="" />
+      <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+   </definition>
+
+   <definition name="main" extends="baseLayout">
+      <put-attribute name="title" value="메인페이지" />
+      <put-attribute name="body" value="/WEB-INF/views/main.jsp" />
+   </definition>
+
+
+   <definition name="/member/listMembers" extends="baseLayout">
+      <put-attribute name="title" value="회원목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/listMembers.jsp" />
+   </definition>
+
+   <definition name="/member/loginForm" extends="baseLayout">
+      <put-attribute name="title" value="로그인창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/loginForm.jsp" />
+   </definition>
+   
+   <definition name="/member/selectMembers" extends="baseLayout">
+      <put-attribute name="title" value="멤버셀렉창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/selectMembers.jsp" />
+   </definition>
+   
+   <definition name="/member/testJquery" extends="nomalLayout">
+      <put-attribute name="title" value="제이쿼리 연습장" />
+      <put-attribute name="body" value="/WEB-INF/views/member/testJquery.jsp" />
+   </definition>
+   
+   <definition name="/test/testMain" extends="baseLayout">
+      <put-attribute name="title" value="게시판 메인" />
+      <put-attribute name="body" value="/WEB-INF/views/test/testMain.jsp" />
+   </definition>
+   
+   <definition name="/member/memberForm" extends="baseLayout">
+      <put-attribute name="title" value="회원가입" />
+      <put-attribute name="body" value="/WEB-INF/views/member/memberForm.jsp" />
+   </definition>
+   
+   <definition name="/member/updateMembers" extends="baseLayout">
+      <put-attribute name="title" value="회원정보 수정" />
+      <put-attribute name="body" value="/WEB-INF/views/member/updateMembers.jsp" />
+   </definition>
+   
+   <definition name="/test/testNotice" extends="baseLayout">
+      <put-attribute name="title" value="게시판 메인" />
+      <put-attribute name="body" value="/WEB-INF/views/test/testNotice.jsp" />
+   </definition>
+   
+   <definition name="/test/insertNotice" extends="baseLayout">
+      <put-attribute name="title" value="글 작성" />
+      <put-attribute name="body" value="/WEB-INF/views/test/insertNotice.jsp" />
+   </definition>
+   
+   <definition name="/test/result" extends="baseLayout">
+      <put-attribute name="title" value="다운로드 확인용" />
+      <put-attribute name="body" value="/WEB-INF/views/test/result.jsp" />
+   </definition>
+   
+   <definition name="/test/selectNotice" extends="baseLayout">
+      <put-attribute name="title" value="게시글 확인" />
+      <put-attribute name="body" value="/WEB-INF/views/test/selectNotice.jsp" />
+   </definition>
+   
+   <definition name="/test/updateNotice" extends="baseLayout">
+      <put-attribute name="title" value="게시글 수정" />
+      <put-attribute name="body" value="/WEB-INF/views/test/updateNotice.jsp" />
+   </definition>
+   
+   <definition name="/test/testIb" extends="baseLayout">
+      <put-attribute name="title" value="아이비시트" />
+      <put-attribute name="body" value="/WEB-INF/views/test/testIb.jsp" />
+   </definition>
+   
+   <definition name="/test/testIb2" extends="baseLayout">
+	  <put-attribute name="title" value="아이비시트" />
+      <put-attribute name="body" value="/WEB-INF/views/test/testIb2.jsp" />
+   </definition>
+   <definition name="test/preview" extends="baseLayout">
+
+   </definition>
+   
+   <definition name="test/download" extends="baseLayout">
+   
+   </definition>
+
+<!-- 
+   <definition name="/member/memberForm" extends="baseLayout">
+      <put-attribute name="title" value="회원등록창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/memberForm.jsp" />
+   </definition>
+   <definition name="/member/viewDetail" extends="baseLayout">
+      <put-attribute name="title" value="회원상세창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/viewDetail.jsp" />
+   </definition> -->
+</tiles-definitions>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.test">
+
+<!--  	<resultMap id="imgMap" class="java.util.HashMap">
+		<result property="FILEBLOB" column="FILEBLOB" javaType="[B"  jdbcType="BLOB" />
+	</resultMap> -->
+	
+	<resultMap id="NoticeList" type="com.myspring.pro27.test.TestVO">
+		<result property = "NUM" column="NUM" />
+		<result property = "ID" column="ID" />
+		<result property = "TITLE" column="TITLE" />
+		<result property = "CONTENT" column="CONTENT" />
+		<result property = "WRITEDATE" column="WRITEDATE" />
+		<result property = "FILEBLOB" column="FILEBLOB" javaType="[B"  jdbcType="BLOB"/>
+		<result property = "FILENAME" column="FILENAME" />
+	</resultMap>
+	
+	<resultMap id="SeqVO" type="com.myspring.pro27.test.SeqVO">
+		<result property = "num" column="num" />
+		<result property = "fileBlob" column="fileBlob" javaType="[B"  jdbcType="BLOB"/>
+		<result property = "fileName" column="fileName" />
+	</resultMap>
+
+	<select id="listNotice" parameterType="String" resultType="java.util.HashMap">
+		SELECT * FROM (
+				SELECT ROWNUM RN, A.* FROM (
+							SELECT * 
+							FROM Notice
+							<if test="search != null">
+								<include refid="search"></include>
+								<!-- WHERE title like '%' || #{num} || '%' -->
+							</if>
+							ORDER BY NUM DESC
+							) A
+					)
+		WHERE RN BETWEEN #{start,jdbcType=VARCHAR} AND #{end,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="countNotice" parameterType="java.util.HashMap" resultType="int">
+		select count(*) from Notice
+		<if test="search != null">
+			<include refid="search"></include>		
+		</if>
+	</select>
+	
+	<sql id="search">
+		<if test="searchType !=null">
+			<if test="searchType == 't'.toString()">where title LIKE '%' || #{search} || '%'</if>
+			<if test="searchType == 'c'.toString()">where content LIKE '%' || #{search} || '%'</if>
+			<if test="searchType == 'w'.toString()">where id LIKE '%' || #{search} || '%'</if>
+		</if>
+	</sql>
+	
+	<select id="selectNotice" parameterType="String" resultMap="NoticeList">
+		select * from Notice
+		where num = #{num}
+	</select>
+	
+	<insert id="insertNotice" parameterType="com.myspring.pro27.test.TestVO">
+		insert into notice(num, id, title, writeDate, content, fileBlob, fileName, seqId)
+		values(seq_ai.nextval, #{id}, #{title}, sysdate, #{content}, #{fileBlob}, #{fileName}, #{seqId})
+	</insert>
+	
+	<select id="selectSeq" parameterType="String" resultType="java.util.HashMap">
+		select * from seqNotice
+		where num = #{time}
+	</select>
+	
+	<select id="searchSeq" parameterType="java.util.HashMap" resultMap="SeqVO">
+		select * from seqNotice
+		where num = #{fileNum} 
+		and fileName = #{fileName}
+	</select>
+	
+	<insert id="insertSeq" parameterType="com.myspring.pro27.test.SeqVO">
+		insert into seqNotice(num, fileBlob, fileName)
+		values(#{num}, #{fileBlob}, #{fileName})
+	</insert>
+	
+	<update id="updateNotice" parameterType="java.util.HashMap">
+		update Notice set title=#{title},
+		content = #{content}
+		where num = #{num}
+	</update>
+	
+	<delete id="deleteNotice" parameterType="String">
+		delete from Notice
+		where num = #{num}
+	</delete>
+
+	<select id="listReply" parameterType="String" resultType="java.util.HashMap">
+		SELECT * FROM (
+				SELECT ROWNUM RN, A.* FROM (
+							SELECT * 
+							FROM REPLY
+							WHERE num = #{num}
+							ORDER BY RE_NUM DESC
+							) A
+					)
+		WHERE RN BETWEEN #{start,jdbcType=VARCHAR} AND #{end,jdbcType=VARCHAR}
+	</select>
+	
+	
+	<select id="preview" parameterType="String" resultType="com.myspring.pro27.test.TestVO">
+		select FILEBLOB from Notice
+		where NUM = #{str}
+	</select>
+	
+	<select id ="countReply" parameterType="String" resultType="int">
+		select count(*) from Reply
+		where num = #{num} 
+	</select>
+	
+	<insert id="insertReply" parameterType="java.util.HashMap">
+		insert into Reply(re_num, re_id, re_writeDate, re_content, num)
+		values(seq_ai2.nextval, #{id}, sysdate, #{content}, #{num})
+	</insert>
+	
+	<update id="updateReply" parameterType="java.util.HashMap">
+		update Reply set re_content = #{content}
+		where re_num = #{num}
+	</update>
+	
+	<delete id="deleteReply" parameterType="String">
+		delete from Reply
+		where RE_NUM = #{num}
+	</delete>
+	
+	
+	<select id="listNotice2" resultType="java.util.HashMap">
+		select NUM, ID, TITLE from Notice
+		order by NUM
+	</select>
+	
+	<select id="boardSelectValue" parameterType="int" resultType="int">
+		select count(*) from Notice
+		where num = #{NUM}
+	</select>
+	
+	<select id="boardList" resultType="java.util.HashMap">
+		select * from Notice
+	</select>
+	
+	<select id="boardList2" parameterType="int" resultType="java.util.HashMap">
+		select * from Notice
+		where num = #{NUM}
+	</select>
+	
+	<insert id="boardInsertIb" parameterType="java.util.HashMap">
+		insert into Notice(num,id,title)
+		values(${NUM},#{ID},#{TITLE})
+	</insert>
+	
+	<update id="boardUpdateIb" parameterType="java.util.HashMap">
+		update Notice
+		set id = #{ID},
+		title = #{TITLE}
+		where num = #{NUM}
+	</update>
+	
+	<update id="boardMergeIb" parameterType="java.util.HashMap">
+	MERGE INTO Notice
+	 
+	USING DUAL
+			 
+	ON(num = #{NUM})
+			
+		WHEN MATCHED THEN	
+		UPDATE SET
+			id = #{ID}
+			,title = #{TITLE}
+			
+		WHEN NOT MATCHED THEN		
+		INSERT(num,id,title)
+		VALUES (${NUM},#{ID},#{TITLE})
+	</update>
+	
+	<delete id="boardDeleteIb" parameterType="java.util.HashMap">
+		dele1te from Noticeeeeeeeee
+		where num = ${NUM}
+	</delete>
+	
+	<select id="boardSelect" parameterType="int" resultType="java.util.HashMap">
+		select * from Notice
+		where num = #{NUM}
+	</select>
+	
+</mapper>
